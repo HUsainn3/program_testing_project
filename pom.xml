@@ -34,18 +34,16 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
 
-        <!-- JSTL support for JSP (Jakarta version) -->
+        <!-- JSTL 3.0 (for Jakarta namespace, Tomcat 10 or higher) -->
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
-        <!-- JSP API (Jakarta version) -->
-        <dependency>
-            <groupId>jakarta.servlet.jsp</groupId>
-            <artifactId>jakarta.servlet.jsp-api</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
         <!-- Spring Boot Test Starter -->

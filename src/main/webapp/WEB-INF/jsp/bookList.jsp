@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <html>
 <head>
     <title>Book List</title>
@@ -25,7 +27,7 @@
     </ul>
 
     <!-- No books found message -->
-    <c:if test="${books.size() == 0}">
+    <c:if test="${empty books}">
         <p>No books found!</p>
     </c:if>
 </body>
