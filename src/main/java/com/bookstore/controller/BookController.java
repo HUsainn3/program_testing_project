@@ -20,13 +20,13 @@ public class BookController {
         this.bookRepository = new BookRepository();
     }
 
-    // Updated to support search functionality
+    // Support search functionality
     @GetMapping("/books")
     public String getAllBooks(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Book> books;
         
         if (search != null && !search.isEmpty()) {
-            books = bookRepository.searchBooks(search);  // Implement search in the repository
+            books = bookRepository.searchBooks(search);
             model.addAttribute("message", "Showing results for: " + search);
         } else {
             books = bookRepository.getAllBooks();
@@ -41,6 +41,7 @@ public class BookController {
         return "bookList";  // Return bookList.jsp
     }
 
+    // Show book details
     @GetMapping("/books/{id}")
     public String getBookDetails(@PathVariable("id") Long id, Model model) {
         Optional<Book> bookOptional = bookRepository.getBookById(id);
@@ -51,6 +52,27 @@ public class BookController {
         } else {
             model.addAttribute("message", "Book not found!");
             return "error";  // Return error.jsp
+        }
+    }
+
+    // New method to handle purchasing of a book
+    @GetMapping("/books/purchase/{id}")
+    public String purchaseBook(@PathVariable("id") Long id, Model model) {
+        boolean success = bookRepository.purchaseBook(id);
+        Optional<Book> bookOptional = bookRepository.getBookById(id);
+    
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            model.addAttribute("book", book);
+            if (success) {
+                model.addAttribute("message", "Purchase successful! " + book.getQuantity() + " left in stock.");
+            } else {
+                model.addAttribute("message", "Purchase failed! Book is out of stock or unavailable.");
+            }
+            return "bookDetail";  // Stay on the book details page after purchase
+        } else {
+            model.addAttribute("message", "Book not found!");
+            return "error";  // Return error.jsp if the book is not found
         }
     }
 }

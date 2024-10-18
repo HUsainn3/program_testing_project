@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -7,7 +7,7 @@
 <body>
     <h1>Available Books</h1>
 
-    <!-- Display search message -->
+    <!-- Display messages (search or purchase status) -->
     <p>${message}</p>
 
     <!-- Search Form -->
@@ -22,6 +22,9 @@
         <c:forEach items="${books}" var="book">
             <li>
                 <a href="/books/${book.id}">${book.title}</a> - ${book.author} ($${book.price})
+                <form action="/books/purchase/${book.id}" method="GET" style="display: inline;">
+                    <button type="submit">Purchase</button>
+                </form>
             </li>
         </c:forEach>
     </ul>
