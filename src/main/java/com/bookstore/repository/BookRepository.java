@@ -21,7 +21,7 @@ public class BookRepository {
         return new ArrayList<>(books);  // Return a copy to avoid external modification
     }
 
-    // New method to search for books by title or author
+    // Search books by title or author
     public List<Book> searchBooks(String keyword) {
         return books.stream()
                 .filter(book -> book.getTitle().toLowerCase().contains(keyword.toLowerCase())
@@ -29,7 +29,23 @@ public class BookRepository {
                 .collect(Collectors.toList());
     }
 
+    // Get a book by its ID
     public Optional<Book> getBookById(Long id) {
         return books.stream().filter(b -> b.getId().equals(id)).findFirst();
+    }
+
+    // New method to handle purchasing of a book
+    public boolean purchaseBook(Long id) {
+        Optional<Book> bookOptional = getBookById(id);
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            if (book.getQuantity() > 0) {
+                book.setQuantity(book.getQuantity() - 1);  // Decrease quantity by 1
+                return true;  // Purchase successful
+            } else {
+                return false;  // Out of stock
+            }
+        }
+        return false;  // Book not found
     }
 }
