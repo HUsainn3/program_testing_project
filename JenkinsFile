@@ -22,7 +22,7 @@ pipeline {
         }
         stage ('Deploy to tomcat server') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'husain12', path: '', url: 'http://localhost:8090/')], contextPath: null, war: '**/*.war'
+                bat 'copy target\\*.war C:\\path\\to\\tomcat\\webapps'
             }
         }
     }
