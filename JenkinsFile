@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "M3"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                git 'https://github.com/AhmadDoobi/program_testing_project.git'
+                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                sh 'mvn clean package'
+            }
+
+            post {
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    echo "Archiving the Artifact"
+                    archiveArtifacts artifacts: '**/target/*.war' 
+                }
+            }
+        }
+        stage ('Deploy to tomcat server') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'husain12', path: '', url: 'http://localhost:8090/')], contextPath: null, war: '**/*.war'
+            }
+        }
+    }
+}
