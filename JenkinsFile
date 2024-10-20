@@ -17,18 +17,18 @@ pipeline {
                 }
                 success {
                     echo "Archiving the Artifact"
-                    archiveArtifacts artifacts: '**/target/*.war'
+                    archiveArtifacts artifacts: '**/target/*.jar'
                 }
                 failure {
                     echo "Build step failed, but proceeding."
-                    archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true
+                    archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
                 }
             }
         }
-        stage ('Deploy to tomcat server') {
+        stage('Deploy to server') {
             when {
                 expression {
-                    fileExists('target/bookstore.war')
+                    fileExists('target/program_testing_project.jar')
                 }
             }
             steps {
