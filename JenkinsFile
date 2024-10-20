@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 git 'https://github.com/AhmadDoobi/program_testing_project.git'
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                bat 'mvn clean package'
             }
 
             post {
