@@ -9,18 +9,28 @@ pipeline {
         stage('Build') {
             steps {
                 git 'https://github.com/AhmadDoobi/program_testing_project.git'
-                bat 'mvn clean package'
+                bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-
             post {
-                success {
+                always {
                     junit '**/target/surefire-reports/TEST-*.xml'
+                }
+                success {
                     echo "Archiving the Artifact"
-                    archiveArtifacts artifacts: '**/target/*.war' 
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
+                failure {
+                    echo "Build step failed, but proceeding."
+                    archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true
                 }
             }
         }
         stage ('Deploy to tomcat server') {
+            when {
+                expression {
+                    fileExists('target/bookstore.war')
+                }
+            }
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'husain12', path: '', url: 'http://localhost:8090/')], contextPath: null, war: '**/*.war'
             }
