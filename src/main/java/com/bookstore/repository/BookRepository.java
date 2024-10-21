@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BookRepository {
+public class BookRepository implements BookRepositoryInterface {
 
     private final List<Book> books = new ArrayList<>();
 
